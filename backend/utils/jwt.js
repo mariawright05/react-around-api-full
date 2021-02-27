@@ -3,8 +3,9 @@ const User = require('../models/user');
 
 const JWT_SECRET = 'thisisthebestsecretever';
 
+// eslint-disable-next-line arrow-body-style
 const generateJWT = (_id) => {
-  jwt.sign(
+  return jwt.sign(
     { _id },
     JWT_SECRET,
     { expiresIn: '7d' },
@@ -16,7 +17,7 @@ const isAuthorized = (token) => {
     if (err) return false;
 
     return User.findOne({ _id: decoded._id })
-      .then(user => Boolean(user));
+      .then((user) => Boolean(user));
   });
 };
 

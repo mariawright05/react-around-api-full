@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const Card = require('../models/card');
 
 function getCards(req, res) {
@@ -38,8 +39,24 @@ function deleteCard(req, res) {
     });
 }
 
+function createLike(req, res, next) {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true },
+  )
+    .then((card) => {
+      if (card) {
+        return res.status(200).send(card);
+      }
+      res.status(404).send({ message: 'This card is already liked' });
+    })
+    .catch((err) => res.status(500).send({ message: err }));
+}
+
 module.exports = {
   getCards,
   createCard,
   deleteCard,
+  createLike,
 };

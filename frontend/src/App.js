@@ -116,19 +116,25 @@ function App() {
 
   const handleTokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      getContent(jwt)
-        .then((res) => {
-          setUserEmail(res.data.email);
-          setIsSuccessful(true);
-          setLoggedIn(true);
-          history.push('/main');
-        })
-        .catch(err => console.log(err))
-    } else {
-      setLoggedIn(false);
-    }
+    getContent(jwt)
+      .then((res) => {
+        setUserEmail(res.data.email);
+        setIsSuccessful(true);
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        setLoggedIn(Boolean(jwt));
+      })
   };
+
+  useEffect(() => {
+    // const jwt = localStorage.getItem('jwt');
+    if (loggedIn) {
+      history.push('/main');
+    } else {
+      history.push('/signin');
+    }
+  }, [loggedIn])
 
   // register user
   const handleRegister = (email, password) => {
@@ -213,7 +219,7 @@ function App() {
     if (loggedIn) {
       history.push('/main');
     }
-  });
+  },[]);
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
