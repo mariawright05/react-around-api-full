@@ -208,6 +208,7 @@ function App() {
   
   useEffect(() => {
     if (token) {
+      console.log('useEffect that calls getUserInfo fired');
       api.getUserInfo(token)
         .then((res) => setCurrentUser(res))
         .catch(err => console.log(err))

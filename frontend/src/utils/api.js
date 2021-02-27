@@ -32,11 +32,13 @@ class Api {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
-      }
+      },
+      method: 'GET',
     }).then((res) =>
-      res.ok
-        ? res.json()
-        : Promise.reject(new TypeError(`Error! ${res.statusText}`))
+      console.log('What I get back from getUserInfo: ', res)
+      // res.ok
+      //   ? res.json()
+      //   : Promise.reject(new TypeError(`Error! ${res.statusText}`))
     );
   }
 

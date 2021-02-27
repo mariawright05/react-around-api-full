@@ -12,21 +12,40 @@ function getUsers(req, res) {
     .catch((err) => res.status(400).send({ message: err }));
 }
 
-function getOneUser(req, res) {
-  return User.findById(req.params.id)
+// function getOneUser(req, res) {
+//   return User.findById(req.params.id)
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(404).send({ message: 'No such user exists' });
+//       }
+//       return res.status(200).send(user);
+//     })
+//     .catch((err) => {
+//       if (err.name === 'CastError') {
+//         return res.status(400).send({ message: 'Invalid user ID' });
+//       }
+//       res.status(500).send({ message: err });
+//     });
+// }
+
+const getOneUser = (req, res, next) => {
+  User.findById(req.params._id)
     .then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: 'No such user exists' });
+      if (user) {
+        res.send({ data: user });
+      } else {
+        throw new Error('User ID not found');
       }
-      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Invalid user ID' });
+        throw new Error('Invalid user ID');
+      } else {
+        throw err;
       }
-      res.status(500).send({ message: err });
-    });
-}
+    })
+    .catch(next);
+};
 
 const createUser = (req, res) => {
   const {
