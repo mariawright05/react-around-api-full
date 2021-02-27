@@ -1,0 +1,18 @@
+@import url(./__menu-link/header__menu-link.css);
+@import url(./__menu-item/header__menu-item.css);
+@import url(./__nav/header__nav.css);
+
+.header {
+  border-bottom: 1px solid #545454b3;
+  padding: 45px 0 41px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 640px) {
+  .header {
+    padding: 28px 0 32px;
+  }
+}

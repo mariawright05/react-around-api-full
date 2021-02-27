@@ -1,0 +1,14 @@
+.photo-grid__like {
+  background-image: url('../../../images/heart.svg');
+  width: 21px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.photo-grid__like:focus {
+  outline: none;
+}

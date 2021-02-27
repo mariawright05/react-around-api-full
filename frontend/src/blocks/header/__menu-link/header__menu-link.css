@@ -1,0 +1,10 @@
+.header__menu-link {
+  margin: 0 0 0 24px;
+  padding: 0;
+  color: #fff;
+  text-decoration: none;
+  line-height: 22px;
+  font-size: 18px;
+  list-style: none;
+  cursor: pointer;
+}

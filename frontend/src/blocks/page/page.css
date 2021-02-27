@@ -1,0 +1,16 @@
+@import url('./__container/page__container.css');
+
+.page {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  background-color: #000;
+  font-family: 'Inter', 'Helvetica', sans-serif;
+  color: #fff;
+  padding: 0 19px;
+  min-height: 100vh;
+}

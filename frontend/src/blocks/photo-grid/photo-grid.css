@@ -1,0 +1,31 @@
+@import url('./__item/photo-grid__item.css');
+@import url('./__image/photo-grid__image.css');
+@import url('./__title-container/photo-grid__title-container.css');
+@import url('./__title/photo-grid__title.css');
+@import url('./__like-wrapper/photo-grid__like-wrapper.css');
+@import url('./__like/photo-grid__like.css');
+@import url('./__like-count/photo-grid__like-count.css');
+@import url('./__remove/photo-grid__remove.css');
+@import url('./__remove/_hidden/photo-grid__remove_hidden.css');
+@import url('./__like/_true/photo-grid__like_true.css');
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 18px;
+  grid-row-gap: 20px;
+  padding: 0;
+}
+
+@media screen and (max-width: 936px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 282px);
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 624px) {
+  .photo-grid {
+    grid-template-columns: repeat(1, 282px);
+  }
+}

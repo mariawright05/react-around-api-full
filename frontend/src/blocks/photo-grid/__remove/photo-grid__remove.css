@@ -1,0 +1,17 @@
+.photo-grid__remove {
+  background-image: url('../../../images/trash.svg');
+  width: 18px;
+  height: 19.3px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  position: absolute;
+  top: 24px;
+  right: 16px;
+  border: none;
+  background-color: transparent;
+}
+
+.photo-grid__remove:hover {
+  opacity: 0.6;
+}

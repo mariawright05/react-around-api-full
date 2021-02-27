@@ -1,0 +1,34 @@
+@import url('./__container/popup__container.css');
+@import url('./__close-button/popup__close-button.css');
+@import url('./__info/popup__info.css');
+@import url('./__heading/popup__heading.css');
+@import url('./__heading/_type_no-inputs/popup__heading_type_no-inputs.css');
+@import url('./__field/popup__field.css');
+@import url('./__button/popup__button.css');
+@import url('./__image-wrapper/popup__image-wrapper.css');
+@import url('./__image-caption/popup__image-caption.css');
+@import url('./__image/popup__image.css');
+@import url('./__figure/popup__figure.css');
+@import url('./__error/popup__error.css');
+@import url('./__error/_visible/popup__error_visible.css');
+@import url('./__form/popup__form.css');
+@import url('./__label/popup__label.css');
+@import url('./__icon/popup__icon.css');
+
+.popup {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 1s, opacity 0.6s;
+  user-select: none;
+  pointer-events: none;
+}
