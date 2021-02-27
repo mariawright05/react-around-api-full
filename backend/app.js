@@ -23,13 +23,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 const userRouter = require('./routers/users');
 const cardRouter = require('./routers/cards');
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5fe8cbdeb3e1372cf078d9c9',
-  };
-  next();
-});
-
 app.use('/users', userRouter);
 app.use('/cards', auth, cardRouter);
 app.post('/signin', login);

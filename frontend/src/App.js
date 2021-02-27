@@ -32,6 +32,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
   const history = useHistory();
 
   // handler functions for popups  
@@ -63,21 +65,21 @@ function App() {
 
   // api functions for popup data
   function handleUpdateUser(userInfo) {
-    api.setUserInfo(userInfo)
+    api.setUserInfo(userInfo, token)
     .then(res => {setCurrentUser({ name:res.name, about:res.about, avatar:res.avatar })})
     .then(() => {closeAllPopups()})
     .catch(err => console.log(err))
   }
 
   function handleUpdateAvatar(avatar) {
-    api.setUserAvatar(avatar)
+    api.setUserAvatar(avatar, token)
     .then(res => {setCurrentUser({ name:res.name, about:res.about, avatar:res.avatar })})
     .then(() => {closeAllPopups()})
     .catch(err => console.log(err))
   }
 
   function handleAddPlaceSubmit(cardInfo) {
-    api.addCard(cardInfo)
+    api.addCard(cardInfo, token)
     .then(res => (setCards([res, ...cards])))
     .then(() => {closeAllPopups()})
     .catch(err => console.log(err))
@@ -88,7 +90,7 @@ function App() {
   function handleCardLike(card) {
     // Check one more time if this card was already liked
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    const res = !isLiked ? api.cardLikeAdd(card._id) : api.cardLikeRemove(card._id);
+    const res = !isLiked ? api.cardLikeAdd(card._id, token) : api.cardLikeRemove(card._id);
 
     res.then((newCard) => {
       // Create a new array based on the existing one and putting a new card into it
@@ -101,7 +103,7 @@ function App() {
 
   // trash
   function handleCardDelete(card) {
-    api.removeCard(card._id)
+    api.removeCard(card._id, token)
     .then(() => {
       const newCardList = cards.filter((c) => c._id !== card._id);
       setCards(newCardList);
@@ -148,19 +150,21 @@ function App() {
   const handleLogin = (email, password) => {
     authorize(email, password)
       .then((res) => {
-        if (!res) {
-          console.log(res.error);
-          setIsSuccessful(false);
-          setIsInfoTooltipOpen(true);
-        } if (res.err) {
-          console.log(res.error);
-          setIsSuccessful(false);
-          setIsInfoTooltipOpen(true);
+        if (res && res.token) {
+          setToken(res.token);
+          localStorage.setItem('token', res.token);
+          setLoggedIn(true);
+        } else {
+          if (!res || res.err) {
+            setIsSuccessful(false);
+            setIsInfoTooltipOpen(true);
+          }
         }
-        handleTokenCheck();
+      })
+      .then(() => {
+        history.push('/main');
       })
       .catch((err) => {
-        console.log(err);
         setIsSuccessful(false);
         setIsInfoTooltipOpen(true);
       })
@@ -178,7 +182,7 @@ function App() {
   const [cards, setCards] = useState([]);
   // add if (loggedIn), then [loggedIn]
   useEffect(() => {
-    api.getCardList()
+    api.getCardList(token)
     .then((res) => {
       setCards(res.map((card) => ({
         link:card.link,
@@ -189,23 +193,23 @@ function App() {
       })));
     })
     .catch(err => console.log(err))
-  }, []);
+  }, [token]);
 
   // initial user data
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = useState({});
   
   useEffect(() => {
-    api.getUserInfo()
+    api.getUserInfo(token)
     .then((res) => setCurrentUser(res))
     .catch(err => console.log(err))
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     handleTokenCheck();
     if (loggedIn) {
       history.push('/main');
     }
-  }, []);
+  });
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
@@ -234,9 +238,10 @@ function App() {
               <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} isSuccessful={isSuccessful} />
             </Route>
             <Route path="/signin">
-              <Login handleLogin={ handleLogin } />
+              <Login handleLogin={ handleLogin } loggedIn={loggedIn} />
               <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} isSuccessful={isSuccessful} />
             </Route>
+            <Redirect from='*' to='/' />
           </Switch>
         
           <EditProfilePopup isOpen={isEditProfilePopopOpen} onClose={closeAllPopups} handleUpdateUser={handleUpdateUser} />

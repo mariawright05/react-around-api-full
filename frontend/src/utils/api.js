@@ -5,16 +5,19 @@ class Api {
     this._headers = headers;
   }
 
-  // Retrieves initial cards and user info from the server
-  getAppInfo() {
-    return Promise.all([this.getUserInfo(), this.getCardList()]);
-  }
+  // // Retrieves initial cards and user info from the server
+  // getAppInfo(token) {
+  //   return Promise.all([this.getUserInfo(), this.getCardList()]);
+  // }
 
   // 2. Loads cards from the server
   // GET https://around.nomoreparties.co/v1/groupId/cards
-  getCardList() {
+  getCardList(token) {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     }).then((res) =>
       res.ok
         ? res.json()
@@ -24,9 +27,12 @@ class Api {
 
   // 1. Loads user info from the server
   // GET https://around.nomoreparties.co/v1/groupId/users/me
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     }).then((res) =>
       res.ok
         ? res.json()
@@ -36,9 +42,12 @@ class Api {
 
   // 4. Adds new card to server from add card form
   // POST https://around.nomoreparties.co/v1/groupId/cards
-  addCard({ name, link }) {
+  addCard({ name, link }, token) {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
       body: JSON.stringify({
         name,
@@ -53,9 +62,12 @@ class Api {
 
   // 7. Delete a card from server
   // DELETE https://around.nomoreparties.co/v1/groupId/cards/cardId
-  removeCard(cardId) {
+  removeCard(cardId, token) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
-      headers: this._headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       method: 'DELETE'
     }).then((res) =>
       res.ok
@@ -66,9 +78,12 @@ class Api {
 
   // 8. Add and remove likes
   // PUT https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-  cardLikeAdd(cardId) {
+  cardLikeAdd(cardId, token) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-      headers: this._headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       method: 'PUT'
     }).then((res) =>
       res.ok
@@ -78,9 +93,12 @@ class Api {
   }
 
   // DELETE https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-  cardLikeRemove(cardId) {
+  cardLikeRemove(cardId, token) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-      headers: this._headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       method: 'DELETE'
     }).then((res) =>
       res.ok
@@ -91,9 +109,12 @@ class Api {
 
   // 3. Adds user info to the server from edit user form
   // PATCH https://around.nomoreparties.co/v1/groupId/users/me
-  setUserInfo({ name, about }) {
+  setUserInfo({ name, about }, token) {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       method: 'PATCH',
       body: JSON.stringify({
         name,
@@ -108,9 +129,12 @@ class Api {
 
   // 9. Add profile picture to server
   // PATCH https://around.nomoreparties.co/v1/groupId/users/me/avatar
-  setUserAvatar(avatar) {
+  setUserAvatar(avatar, token) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
-      headers: this._headers,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       method: 'PATCH',
       body: JSON.stringify({ avatar })
     }).then((res) =>
@@ -123,11 +147,7 @@ class Api {
 
 // INIT API CLASS AND ADD USER GROUP AND AUTH TOKEN
 const api = new Api({
-  baseUrl: 'https://around.nomoreparties.co/v1/group-5',
-  headers: {
-    authorization: '095d2fb7-24e6-4afa-94ea-68b60bd7e290',
-    'Content-Type': 'application/json'
-  }
+  baseUrl: 'https://localhost:3000',
 });
 
 export default api;

@@ -76,10 +76,11 @@ const login = (req, res) => {
 function getCurrentUser(req, res) {
   User.findById(req.user._id)
     .then((user) => {
+      console.log('userController:', user);
       if (!user) {
         throw new Error('User not found');
       }
-      res.send(user);
+      res.send({ data: user });
     })
     .catch((err) => res.status(400).send({ message: err }));
 }

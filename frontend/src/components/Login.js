@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Header from './Header';
 
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin, loggedIn }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,10 +16,10 @@ const Login = ({ handleLogin }) => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('jwt')) {
+    if (loggedIn) {
       history.push('/main') 
     }
-  }, [history])
+  })
 
   return (
     <div>
