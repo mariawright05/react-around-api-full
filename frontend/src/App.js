@@ -66,23 +66,23 @@ function App() {
   // api functions for popup data
   function handleUpdateUser(userInfo) {
     api.setUserInfo(userInfo, token)
-    .then(res => {setCurrentUser({ name:res.name, about:res.about, avatar:res.avatar })})
-    .then(() => {closeAllPopups()})
-    .catch(err => console.log(err))
+      .then(res => { setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar }) })
+      .then(() => { closeAllPopups() })
+      .catch(err => console.log(err))
   }
 
   function handleUpdateAvatar(avatar) {
     api.setUserAvatar(avatar, token)
-    .then(res => {setCurrentUser({ name:res.name, about:res.about, avatar:res.avatar })})
-    .then(() => {closeAllPopups()})
-    .catch(err => console.log(err))
+      .then(res => { setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar }) })
+      .then(() => { closeAllPopups() })
+      .catch(err => console.log(err))
   }
 
   function handleAddPlaceSubmit(cardInfo) {
     api.addCard(cardInfo, token)
-    .then(res => (setCards([res, ...cards])))
-    .then(() => {closeAllPopups()})
-    .catch(err => console.log(err))
+      .then(res => (setCards([res, ...cards])))
+      .then(() => { closeAllPopups() })
+      .catch(err => console.log(err))
   }
 
   // CARD FUNCTIONALITY
@@ -98,17 +98,17 @@ function App() {
       // Update the state
       setCards(newCards);
     })
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }
 
   // trash
   function handleCardDelete(card) {
     api.removeCard(card._id, token)
-    .then(() => {
-      const newCardList = cards.filter((c) => c._id !== card._id);
-      setCards(newCardList);
-    })
-    .catch(err => console.log(err));
+      .then(() => {
+        const newCardList = cards.filter((c) => c._id !== card._id);
+        setCards(newCardList);
+      })
+      .catch(err => console.log(err));
   }
 
   // AUTH
@@ -116,13 +116,13 @@ function App() {
 
   const handleTokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
-    if (jwt){
-       getContent(jwt)
-         .then((res) => {
-            setUserEmail(res.data.email);
-            setIsSuccessful(true);
-            setLoggedIn(true);
-            history.push('/main');
+    if (jwt) {
+      getContent(jwt)
+        .then((res) => {
+          setUserEmail(res.data.email);
+          setIsSuccessful(true);
+          setLoggedIn(true);
+          history.push('/main');
         })
         .catch(err => console.log(err))
     } else {
@@ -182,26 +182,30 @@ function App() {
   const [cards, setCards] = useState([]);
   // add if (loggedIn), then [loggedIn]
   useEffect(() => {
-    api.getCardList(token)
-    .then((res) => {
-      setCards(res.map((card) => ({
-        link:card.link,
-        name: card.name,
-        likes: card.likes,
-        _id: card._id,
-        owner: card.owner
-      })));
-    })
-    .catch(err => console.log(err))
+    if (token) {
+      api.getCardList(token)
+        .then((res) => {
+          setCards(res.map((card) => ({
+            link: card.link,
+            name: card.name,
+            likes: card.likes,
+            _id: card._id,
+            owner: card.owner
+          })));
+        })
+        .catch(err => console.log(err))
+    } 
   }, [token]);
 
   // initial user data
   const [currentUser, setCurrentUser] = useState({});
   
   useEffect(() => {
-    api.getUserInfo(token)
-    .then((res) => setCurrentUser(res))
-    .catch(err => console.log(err))
+    if (token) {
+      api.getUserInfo(token)
+        .then((res) => setCurrentUser(res))
+        .catch(err => console.log(err))
+    } 
   }, [token]);
 
   useEffect(() => {

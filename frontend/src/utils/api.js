@@ -147,7 +147,7 @@ class Api {
 
 // INIT API CLASS AND ADD USER GROUP AND AUTH TOKEN
 const api = new Api({
-  baseUrl: 'https://localhost:3000',
+  baseUrl: 'http://localhost:3000',
 });
 
 export default api;
