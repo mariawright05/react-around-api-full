@@ -87,7 +87,7 @@ const getCurrentUser = (req, res, next) => {
         throw new NotFoundError('User does not exist');
       }
     })
-    .then((err) => {
+    .catch((err) => {
       if (err.name === 'CastError') {
         throw new ValidationError('Invalid user ID');
       }

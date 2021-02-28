@@ -12,9 +12,9 @@ const {
 
 userRouter.get('/', getUsers);
 
-userRouter.get('/:id', getOneUser);
-
 userRouter.get('/me', getCurrentUser);
+
+userRouter.get('/:id', getOneUser);
 
 userRouter.patch('/me/avatar', updateAvatar);
 

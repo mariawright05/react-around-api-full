@@ -35,7 +35,6 @@ class Api {
       },
       method: 'GET',
     }).then((res) =>
-      // console.log('What I get back from getUserInfo: ', res)
       res.ok
         ? res.json()
         : Promise.reject(new TypeError(`Error! ${res.statusText}`))

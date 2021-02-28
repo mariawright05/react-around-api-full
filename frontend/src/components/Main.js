@@ -25,7 +25,7 @@ function Main ({
           <div className="profile__avatar-container">
             <img
               className="profile__user-avatar"
-              style={{backgroundImage: `url(${currentUser.avatar})`}}
+              src={currentUser.avatar}
               alt={currentUser.name}
             />
             <button

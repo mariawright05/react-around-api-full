@@ -33,6 +33,7 @@ function App() {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [currentUser, setCurrentUser] = useState({});
 
   const history = useHistory();
 
@@ -119,7 +120,8 @@ function App() {
     getContent(jwt)
       .then((res) => {
         console.log('after auth res: ', res);
-        setUserEmail(res.data.email);
+        setCurrentUser(res);
+        setUserEmail(res.email);
         setIsSuccessful(true);
       })
       .catch(err => console.log(err))
@@ -204,15 +206,16 @@ function App() {
     } 
   }, [token]);
 
-  // initial user data
-  const [currentUser, setCurrentUser] = useState({});
-  
+  // initial user data  
   useEffect(() => {
     if (token) {
       console.log('useEffect that calls getUserInfo fired');
       api.getUserInfo(token)
-        .then((res) => console.log('what came back from getUserInfo: ',res))
-        .then((res) => setCurrentUser(res))
+        .then((res) => {
+          if (res && res.data) {
+            setCurrentUser(res)
+          }
+    })
         .catch(err => console.log(err))
     } 
   }, [token]);
