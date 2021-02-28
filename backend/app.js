@@ -11,7 +11,13 @@ const auth = require('./middleware/auth');
 
 app.use(bodyParser.json());
 app.use(helmet());
-app.use(cors());
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 mongoose.connect('mongodb://localhost:27017/aroundb', {
   useNewUrlParser: true,
@@ -31,6 +37,18 @@ app.use('/cards', cardRouter);
 
 app.get('*', (req, res) => {
   res.status(404).send({ message: 'Requested resource not found' });
+});
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? 'An error occurred on the server'
+        : message,
+    });
+  next();
 });
 
 app.listen(PORT, () => {

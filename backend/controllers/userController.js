@@ -1,53 +1,38 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/user');
 const { generateJWT } = require('../utils/jwt');
+
+const User = require('../models/user');
+const AuthorizationError = require('../middleware/errors/AuthorizationError');
+const ConflictError = require('../middleware/errors/ConflictError');
+const NotFoundError = require('../middleware/errors/NotFoundError');
+const ValidationError = require('../middleware/errors/ValidationError');
 
 const SALT_ROUND = 10;
 
-function getUsers(req, res) {
-  return User.find({})
+const getUsers = (req, res, next) => {
+  User.find({})
     .then((users) => {
+      if (users === undefined) {
+        throw new NotFoundError('No users found');
+      }
       res.status(200).send(users);
     })
-    .catch((err) => res.status(400).send({ message: err }));
-}
-
-// function getOneUser(req, res) {
-//   return User.findById(req.params.id)
-//     .then((user) => {
-//       if (!user) {
-//         return res.status(404).send({ message: 'No such user exists' });
-//       }
-//       return res.status(200).send(user);
-//     })
-//     .catch((err) => {
-//       if (err.name === 'CastError') {
-//         return res.status(400).send({ message: 'Invalid user ID' });
-//       }
-//       res.status(500).send({ message: err });
-//     });
-// }
+    .catch(next);
+};
 
 const getOneUser = (req, res, next) => {
-  User.findById(req.params._id)
+  User.findById(req.params.id)
     .then((user) => {
       if (user) {
-        res.send({ data: user });
+        res.send(user);
       } else {
-        throw new Error('User ID not found');
-      }
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new Error('Invalid user ID');
-      } else {
-        throw err;
+        throw new NotFoundError('User not found');
       }
     })
     .catch(next);
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const {
     name,
     about,
@@ -67,14 +52,16 @@ const createUser = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: err });
-      } else {
-        res.status(500).send({ message: err });
+        throw new ValidationError('Invalid user');
       }
-    });
+      if (err.code === '11000') {
+        throw new ConflictError('User already exists');
+      }
+    })
+    .catch(next);
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -85,24 +72,54 @@ const login = (req, res) => {
       // return the token
       res.send({ token });
     })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
-    });
+    .catch(() => {
+      throw new AuthorizationError('Invalid email or password');
+    })
+    .catch(next);
 };
 
-function getCurrentUser(req, res) {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
-      console.log('userController:', user);
-      if (!user) {
-        throw new Error('User not found');
+      if (user) {
+        res.send(user._doc);
+      } else {
+        throw new NotFoundError('User does not exist');
       }
-      res.send({ data: user });
     })
-    .catch((err) => res.status(400).send({ message: err }));
-}
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new ValidationError('Invalid user ID');
+      }
+    })
+    .catch(next);
+};
+
+const updateUser = (req, res, next) => {
+  const { name, about } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new ValidationError('User validation failed');
+      }
+    })
+    .catch(next);
+};
+
+const updateAvatar = (req, res, next) => {
+  const { avatar } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new ValidationError('User validation failed');
+      }
+    })
+    .catch(next);
+};
 
 module.exports = {
   getUsers,
@@ -110,4 +127,6 @@ module.exports = {
   createUser,
   login,
   getCurrentUser,
+  updateUser,
+  updateAvatar,
 };

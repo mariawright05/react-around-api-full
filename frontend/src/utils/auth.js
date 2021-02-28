@@ -48,7 +48,6 @@ export const getContent = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-    .then(res => console.log('getContent frontend', res))
     .then(res => res.json())
     .then(res => res)
 }

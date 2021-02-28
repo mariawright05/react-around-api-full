@@ -118,6 +118,7 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     getContent(jwt)
       .then((res) => {
+        console.log('after auth res: ', res);
         setUserEmail(res.data.email);
         setIsSuccessful(true);
       })
@@ -210,6 +211,7 @@ function App() {
     if (token) {
       console.log('useEffect that calls getUserInfo fired');
       api.getUserInfo(token)
+        .then((res) => console.log('what came back from getUserInfo: ',res))
         .then((res) => setCurrentUser(res))
         .catch(err => console.log(err))
     } 

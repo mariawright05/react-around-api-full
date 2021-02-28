@@ -1,12 +1,12 @@
 /* eslint-disable consistent-return */
+// const NotFoundError = require('../middleware/errors/NotFoundError');
+const ValidationError = require('../middleware/errors/ValidationError');
 const Card = require('../models/card');
 
-function getCards(req, res) {
-  return Card.find({})
-    .then((cards) => {
-      res.status(200).send(cards);
-    })
-    .catch((err) => res.status(400).send({ message: err }));
+function getCards(req, res, next) {
+  Card.find({})
+    .then((cards) => res.send(cards))
+    .catch(next);
 }
 
 function createCard(req, res) {
@@ -49,9 +49,24 @@ function createLike(req, res, next) {
       if (card) {
         return res.status(200).send(card);
       }
-      res.status(404).send({ message: 'This card is already liked' });
+      throw new ValidationError('This card was already liked');
     })
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch(next);
+}
+
+function deleteLike(req, res, next) {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $pull: { likes: req.user._id } },
+    { new: true },
+  )
+    .then((card) => {
+      if (card) {
+        return res.status(200).send(card);
+      }
+      throw new ValidationError('This card has not been liked');
+    })
+    .catch(next);
 }
 
 module.exports = {
@@ -59,4 +74,5 @@ module.exports = {
   createCard,
   deleteCard,
   createLike,
+  deleteLike,
 };
