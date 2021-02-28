@@ -67,14 +67,14 @@ function App() {
   // api functions for popup data
   function handleUpdateUser(userInfo) {
     api.setUserInfo(userInfo, token)
-      .then(res => { setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar }) })
+      .then(res => { setCurrentUser({ name: res.data.name, about: res.data.about, avatar: res.data.avatar }) })
       .then(() => { closeAllPopups() })
       .catch(err => console.log(err))
   }
 
   function handleUpdateAvatar(avatar) {
     api.setUserAvatar(avatar, token)
-      .then(res => { setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar }) })
+      .then(res => { setCurrentUser({ name: res.data.name, about: res.data.about, avatar: res.data.avatar }) })
       .then(() => { closeAllPopups() })
       .catch(err => console.log(err))
   }

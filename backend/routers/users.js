@@ -1,5 +1,5 @@
 const express = require('express');
-// const { celebrate, Joi, Segments } = require('celebrate');
+const { celebrate, Joi, Segments } = require('celebrate');
 
 const userRouter = express.Router();
 const {
@@ -14,10 +14,23 @@ userRouter.get('/', getUsers);
 
 userRouter.get('/me', getCurrentUser);
 
-userRouter.get('/:id', getOneUser);
+userRouter.get('/:id', celebrate({
+  [Segments.PARAMS]: Joi.object({
+    id: Joi.string().required().length(24).required(),
+  }),
+}), getOneUser);
 
-userRouter.patch('/me/avatar', updateAvatar);
+userRouter.post('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required().uri(),
+  }),
+}), updateAvatar);
 
-userRouter.patch('/me', updateUser);
+userRouter.post('/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
+  }),
+}), updateUser);
 
 module.exports = userRouter;

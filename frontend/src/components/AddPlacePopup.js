@@ -5,6 +5,10 @@ function AddPlacePopup(props) {
   const [cardName, setCardName] = React.useState('');
   const [cardLink, setCardLink] = React.useState('');
 
+  // clears form after submit
+  // const titleInput = React.useRef('');
+  // const urlInput = React.useRef('');
+  
   const handleCardNameChange = (e) => {
     setCardName(e.target.value);
   };
@@ -33,6 +37,7 @@ function AddPlacePopup(props) {
       <fieldset className="popup__info">
         <div className="popup__label">
           <input
+            // ref={titleInput}
             id="card-title"
             type="text"
             name="title"
@@ -47,6 +52,7 @@ function AddPlacePopup(props) {
         </div>
         <div className="popup__label">
           <input
+            // ref={urlInput}
             id="card-url"
             type="url"
             name="url"

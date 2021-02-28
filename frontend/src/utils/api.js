@@ -116,7 +116,7 @@ class Api {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      method: 'PATCH',
+      method: 'POST',
       body: JSON.stringify({
         name,
         about
@@ -136,7 +136,7 @@ class Api {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      method: 'PATCH',
+      method: 'POST',
       body: JSON.stringify({ avatar })
     }).then((res) =>
       res.ok
