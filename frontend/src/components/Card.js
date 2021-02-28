@@ -14,8 +14,13 @@ function Card(props) {
   }`;
 
   // LIKE INFO
-  // Check if the card was liked by the current user
-  const isLiked = props.card.likes.some((i) => i._id === currentUser._id);
+  const [isLiked, setIsLiked] = React.useState(false);
+
+  React.useEffect(() => {
+    if (props.card.likes) {
+      props.card.likes.includes(currentUser._id) ? setIsLiked(true) : setIsLiked(false);
+    }
+  }, [props.card])
 
   // Create a variable which you then set in `className` for the like button
   const cardLikeButtonClassName = `${

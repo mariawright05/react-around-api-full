@@ -119,7 +119,6 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     getContent(jwt)
       .then((res) => {
-        console.log('after auth res: ', res);
         setCurrentUser(res);
         setUserEmail(res.email);
         setIsSuccessful(true);
@@ -209,7 +208,6 @@ function App() {
   // initial user data  
   useEffect(() => {
     if (token) {
-      console.log('useEffect that calls getUserInfo fired');
       api.getUserInfo(token)
         .then((res) => {
           if (res && res.data) {
