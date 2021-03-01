@@ -35,6 +35,9 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [currentUser, setCurrentUser] = useState({});
 
+  // set states for cards
+  const [isLiked, setIsLiked] = useState(false);
+
   const history = useHistory();
 
   // handler functions for popups  
@@ -90,17 +93,25 @@ function App() {
   // likes and dislikes
   function handleCardLike(card) {
     // Check one more time if this card was already liked
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    const res = !isLiked ? api.cardLikeAdd(card._id, token) : api.cardLikeRemove(card._id);
-
-    res.then((newCard) => {
-      // Create a new array based on the existing one and putting a new card into it
-      const newCards = cards.map((c) => c._id === card._id ? newCard : c)
-      // Update the state
-      setCards(newCards);
-    })
-      .catch(err => console.log(err));
+    const isLiked = card.likes.includes(currentUser._id);
+    api.updateLikes(card._id, !isLiked, token)
+      .then((newCard) => { 
+        const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
   }
+
+  //   const res = !isLiked ? api.cardLikeAdd(card._id, token) : api.cardLikeRemove(card._id);
+
+  //   res.then((newCard) => {
+  //     // Create a new array based on the existing one and putting a new card into it
+  //     const newCards = cards.map((c) => c._id === card._id ? newCard : c)
+  //     // Update the state
+  //     setCards(newCards);
+  //   })
+  //     .catch(err => console.log(err));
+  // }
 
   // trash
   function handleCardDelete(card) {
