@@ -17,7 +17,6 @@ function Main ({
   onSignOut }) {
   
   const currentUser = React.useContext(CurrentUserContext);
-  console.log('currentUser in Main: ', currentUser);
 
   return (
     <main>

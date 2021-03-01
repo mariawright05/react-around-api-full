@@ -20,7 +20,7 @@ function Card(props) {
     if (props.card.likes) {
       props.card.likes.includes(currentUser._id) ? setIsLiked(true) : setIsLiked(false);
     }
-  }, [props.card])
+  }, [props.card, currentUser._id, props.card.likes])
 
   // Create a variable which you then set in `className` for the like button
   const cardLikeButtonClassName = `${
