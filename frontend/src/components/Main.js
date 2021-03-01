@@ -15,7 +15,9 @@ function Main ({
   handleCardLike,
   handleCardDelete,
   onSignOut }) {
+  
   const currentUser = React.useContext(CurrentUserContext);
+  console.log('currentUser in Main: ', currentUser);
 
   return (
     <main>
@@ -47,7 +49,7 @@ function Main ({
 
       <section>
         <ul className="photo-grid">
-          {cards.map((card, index) => (
+          {currentUser && (cards.map((card, index) => (
             <Card
               key={index}
               card={card}
@@ -60,7 +62,7 @@ function Main ({
               onCardLike={() => handleCardLike(card)}
               onCardDelete={() => handleCardDelete(card)}
             />
-          ))}
+          )))}
         </ul>
       </section>
       <Footer />

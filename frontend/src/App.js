@@ -130,29 +130,13 @@ function App() {
   };
 
   useEffect(() => {
-    // const jwt = localStorage.getItem('jwt');
+    handleTokenCheck();
     if (loggedIn) {
       history.push('/main');
     } else {
       history.push('/signin');
     }
   }, [loggedIn])
-
-  // register user
-  const handleRegister = (email, password) => {
-    register(email, password)
-      .then((res) => {
-        if (res.err || !res) {
-          setIsSuccessful(false);
-          setIsInfoTooltipOpen(true);
-        } else {
-          setIsSuccessful(true);
-          setIsInfoTooltipOpen(true);
-          history.push('/signin');
-        }
-      })
-      .catch(err => console.log(err))
-  }
 
   // login user
   const handleLogin = (email, password) => {
@@ -177,6 +161,22 @@ function App() {
         setIsSuccessful(false);
         setIsInfoTooltipOpen(true);
       })
+  }
+
+  // register user
+  const handleRegister = (email, password) => {
+    register(email, password)
+      .then((res) => {
+        if (res.err || !res) {
+          setIsSuccessful(false);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setIsSuccessful(true);
+          setIsInfoTooltipOpen(true);
+          history.push('/signin');
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   // Log user out
@@ -218,13 +218,6 @@ function App() {
         .catch(err => console.log(err))
     } 
   }, [token]);
-
-  useEffect(() => {
-    handleTokenCheck();
-    if (loggedIn) {
-      history.push('/main');
-    }
-  },[loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
