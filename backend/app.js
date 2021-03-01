@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
+const { errors } = require('celebrate');
 
 const app = express();
 const { PORT = 3000 } = process.env;
 const { createUser, login } = require('./controllers/userController');
+const { requestLogger, errorLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
 
 app.use(bodyParser.json());
@@ -30,6 +32,8 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 const userRouter = require('./routers/users');
 const cardRouter = require('./routers/cards');
 
+app.use(requestLogger);
+
 app.post('/signin', login);
 app.post('/signup', createUser);
 app.use(auth);
@@ -39,6 +43,12 @@ app.use('/cards', cardRouter);
 app.get('*', (req, res) => {
   res.status(404).send({ message: 'Requested resource not found' });
 });
+
+// enabling the error logger
+app.use(errorLogger);
+
+// celebrate error handler
+app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;

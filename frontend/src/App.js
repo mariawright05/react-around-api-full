@@ -160,6 +160,7 @@ function App() {
       .then((res) => {
         if (res && res.token) {
           setToken(res.token);
+          setUserEmail(res.email);
           localStorage.setItem('token', res.token);
           setLoggedIn(true);
         } else {
