@@ -3,6 +3,7 @@ import React from 'react';
 const CurrentUserContext = React.createContext({
   name: '',
   about: '',
-  avatar: ''
+  avatar: '',
+  email: ''
 });
 export default CurrentUserContext;

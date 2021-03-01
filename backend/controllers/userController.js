@@ -70,7 +70,7 @@ const login = (req, res, next) => {
       const token = generateJWT(user._id);
 
       // return the token
-      res.send({ token });
+      res.send({ email, token });
     })
     .catch(() => {
       throw new AuthorizationError('Invalid email or password');

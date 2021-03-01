@@ -224,7 +224,7 @@ function App() {
     if (loggedIn) {
       history.push('/main');
     }
-  },[]);
+  },[loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
