@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Header from './Header';
 
-
 const Login = ({ handleLogin, loggedIn }) => {
 
   const [email, setEmail] = useState('');

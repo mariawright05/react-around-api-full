@@ -5,11 +5,6 @@ class Api {
     this._headers = headers;
   }
 
-  // // Retrieves initial cards and user info from the server
-  // getAppInfo(token) {
-  //   return Promise.all([this.getUserInfo(), this.getCardList()]);
-  // }
-
   // 2. Loads cards from the server
   // GET https://around.nomoreparties.co/v1/groupId/cards
   getCardList(token) {
@@ -78,8 +73,9 @@ class Api {
   }
 
   // 8. Add and remove likes
+  // PUT, DELETE
   updateLikes(cardId, isLiked, token) {
-    return fetch(`${this.baseUrl}/cards/likes/${cardId}`, { 
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, { 
       method: isLiked ? 'PUT' : 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -91,32 +87,6 @@ class Api {
       : Promise.reject(new TypeError(`Error! ${res.statusText}`))
     );
   }
-
-
-  // PUT https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-  // cardLikeAdd(cardId, token) {
-  //   return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //       'Content-Type': 'application/json'
-  //     },
-  //     method: 'PUT'
-  //   })
-
-  // // DELETE https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-  // cardLikeRemove(cardId, token) {
-  //   return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //       'Content-Type': 'application/json'
-  //     },
-  //     method: 'DELETE'
-  //   }).then((res) =>
-  //     res.ok
-  //       ? res.json()
-  //       : Promise.reject(new TypeError(`Error! ${res.statusText}`))
-  //   );
-  // }
 
   // 3. Adds user info to the server from edit user form
   // PATCH https://around.nomoreparties.co/v1/groupId/users/me

@@ -35,9 +35,6 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [currentUser, setCurrentUser] = useState({});
 
-  // set states for cards
-  const [isLiked, setIsLiked] = useState(false);
-
   const history = useHistory();
 
   // handler functions for popups  
@@ -102,17 +99,6 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  //   const res = !isLiked ? api.cardLikeAdd(card._id, token) : api.cardLikeRemove(card._id);
-
-  //   res.then((newCard) => {
-  //     // Create a new array based on the existing one and putting a new card into it
-  //     const newCards = cards.map((c) => c._id === card._id ? newCard : c)
-  //     // Update the state
-  //     setCards(newCards);
-  //   })
-  //     .catch(err => console.log(err));
-  // }
-
   // trash
   function handleCardDelete(card) {
     api.removeCard(card._id, token)
@@ -125,7 +111,6 @@ function App() {
 
   // AUTH
   // see if user is logged in
-
   const handleTokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
     getContent(jwt)
