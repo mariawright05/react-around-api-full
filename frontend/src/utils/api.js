@@ -128,7 +128,7 @@ class Api {
 
 // INIT API CLASS AND ADD USER GROUP AND AUTH TOKEN
 const api = new Api({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'http://api.mmw.students.nomoreparties.site',
 });
 
 export default api;
