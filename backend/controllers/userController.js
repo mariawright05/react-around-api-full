@@ -32,7 +32,7 @@ const getOneUser = (req, res, next) => {
     .catch(next);
 };
 
-const createUser = (req, res, next) => {
+const createUser = (req, res) => {
   const {
     name,
     about,
