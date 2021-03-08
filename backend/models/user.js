@@ -59,7 +59,7 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
 };
 
 // eslint-disable-next-line func-names
-userSchema.methods.toJSON = function toJSON() {
+userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
