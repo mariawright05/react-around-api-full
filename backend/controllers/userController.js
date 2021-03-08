@@ -49,7 +49,7 @@ const createUser = (req, res, next) => {
       email,
       password: hash, // adding the hash to the database
     }))
-    .then((user) => res.status(200).send(user.toJSON()))
+    .then((user) => res.status(200).send({ data: user.toJSON() }))
     .catch((err) => {
       if (err.code === '11000') {
         throw new ConflictError('User already exists');
