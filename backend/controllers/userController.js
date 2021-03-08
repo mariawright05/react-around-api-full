@@ -51,15 +51,13 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res.status(200).send({ data: user.toJSON() }))
     .catch((err) => {
-      console.log(err);
       if (err.name === 'MongoError' && err.code === '11000') {
         throw new ConflictError('User already exists');
       }
       if (err.name === 'ValidationError') {
         throw new ValidationError('Invalid user');
       }
-    })
-    .catch(next);
+    });
 };
 
 const login = (req, res, next) => {
