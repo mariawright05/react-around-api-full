@@ -32,7 +32,7 @@ const getOneUser = (req, res, next) => {
     .catch(next);
 };
 
-const createUser = (req, res, next) => {
+const createUser = (req, res) => {
   const {
     name,
     about,
@@ -58,7 +58,7 @@ const createUser = (req, res, next) => {
         throw new ValidationError('Invalid user');
       }
     })
-    .catch(next);
+    .catch((err) => console.log(err));
 };
 
 const login = (req, res, next) => {
