@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
-const { errors } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -31,17 +31,31 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
 
 const userRouter = require('./routers/users');
 const cardRouter = require('./routers/cards');
+const NotFoundError = require('./middleware/errors/NotFoundError');
 
 app.use(requestLogger);
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string(),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
 app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
-app.get('*', (req, res) => {
-  res.status(404).send({ message: 'Requested resource not found' });
+app.get('*', () => {
+  throw new NotFoundError('Requested resource not found');
 });
 
 // enabling the error logger

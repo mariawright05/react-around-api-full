@@ -50,7 +50,7 @@ const createUser = (req, res, next) => {
       password: hash, // adding the hash to the database
     }))
     .then((user) => res.status(200).send({ data: user.toJSON() }))
-    .catch((err) => {
+    .then((err) => {
       if (err.name === 'MongoError' && err.code === '11000') {
         throw new ConflictError('User already exists');
       }
