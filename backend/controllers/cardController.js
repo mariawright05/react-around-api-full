@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
-// const NotFoundError = require('../middleware/errors/NotFoundError');
+const NotFoundError = require('../middleware/errors/NotFoundError');
 const ValidationError = require('../middleware/errors/ValidationError');
+const ForbiddenError = require('../middleware/errors/ForbiddenError');
 const Card = require('../models/card');
 
 function getCards(req, res, next) {
@@ -9,34 +10,31 @@ function getCards(req, res, next) {
     .catch(next);
 }
 
-function createCard(req, res) {
+function createCard(req, res, next) {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: err });
-      } else {
-        res.status(500).send({ message: err });
+        throw new ValidationError('Unable to create card');
       }
-    });
+    })
+    .catch(next);
 }
 
-function deleteCard(req, res) {
-  Card.findByIdAndDelete(req.params.cardId)
+function deleteCard(req, res, next) {
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'No such card exists' });
+        throw new NotFoundError('There is no card with this ID');
       }
-      res.status(200).send({ data: card });
+      if (req.user._id.toString() !== card.owner.toString()) {
+        throw new ForbiddenError('You do not have permission to delete this card');
+      }
+      return Card.remove(card).then(() => { res.send({ data: card }); });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Invalid card ID' });
-      }
-      res.status(500).send({ message: err });
-    });
+    .catch(next);
 }
 
 function createLike(req, res, next) {

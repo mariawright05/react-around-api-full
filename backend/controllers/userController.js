@@ -57,7 +57,6 @@ const createUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Invalid user');
       }
-      next();
     })
     .catch(next);
 };
