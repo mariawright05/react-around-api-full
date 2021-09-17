@@ -128,7 +128,7 @@ class Api {
 
 // INIT API CLASS AND ADD USER GROUP AND AUTH TOKEN
 const api = new Api({
-  baseUrl: 'https://around-the-us.herokuapp.com/',
+  baseUrl: 'https://around-the-us.herokuapp.com',
 });
 
 export default api;
