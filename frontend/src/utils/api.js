@@ -128,7 +128,7 @@ class Api {
 
 // INIT API CLASS AND ADD USER GROUP AND AUTH TOKEN
 const api = new Api({
-  baseUrl: 'https://api.mmw.students.nomoreparties.site',
+  baseUrl: 'https://around-the-us.herokuapp.com/',
 });
 
 export default api;
