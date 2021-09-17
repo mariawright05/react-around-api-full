@@ -132,6 +132,7 @@ function App() {
     } else {
       history.push('/signin');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn])
 
   // login user

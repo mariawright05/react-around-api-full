@@ -13,6 +13,7 @@ function InfoTooltip({ isOpen, onClose, isSuccessful }) {
       <div className={ "popup__container popup_type_tooltip" }>
         <img
           className="popup__icon"
+          alt="notification icon"
           src={isSuccessful ? successIcon : errorIcon}
         />
         <p className="popup__heading popup__heading_type_no-inputs">
