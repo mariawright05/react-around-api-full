@@ -6,10 +6,12 @@ const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const app = express();
-const { PORT = 3000 } = process.env;
+// const { PORT = 3000 } = process.env;
 const { createUser, login } = require('./controllers/userController');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
+
+require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(helmet());
@@ -22,7 +24,7 @@ const corsOptions = {
 app.use(express.json(), cors(corsOptions));
 // app.options('*', cors());
 
-mongoose.connect('mongodb://localhost:27017/aroundb', {
+mongoose.connect('mongodb+srv://mmw:ijmagnm11@around-the-us.6qdwd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -82,7 +84,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 3001, () => {
   // eslint-disable-next-line no-console
-  console.log(`App listening at port ${PORT}`);
+  console.log(`You are connected`);
 });
