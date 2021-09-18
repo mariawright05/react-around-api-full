@@ -8,7 +8,7 @@ const {
   getCurrentUser,
   updateUser,
   updateAvatar,
-} = require('../controllers/userController.js');
+} = require('../controllers/userController');
 
 userRouter.get('/', getUsers);
 

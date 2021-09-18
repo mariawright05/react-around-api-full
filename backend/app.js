@@ -86,5 +86,5 @@ app.use((err, req, res, next) => {
 
 app.listen(process.env.PORT || 3001, () => {
   // eslint-disable-next-line no-console
-  console.log(`You are connected`);
+  console.log('You are connected');
 });
