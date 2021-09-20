@@ -41,7 +41,7 @@ const Register = ({ handleRegister }) => {
             <div className="form__label">
               <input
                 id="password"
-                type="text"
+                type="password"
                 name="password"
                 className="form__field"
                 placeholder="Password"
