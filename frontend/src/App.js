@@ -67,14 +67,16 @@ function App() {
   // api functions for popup data
   function handleUpdateUser(userInfo) {
     api.setUserInfo(userInfo, token)
-      .then(res => { setCurrentUser({ name: res.data.name, about: res.data.about, avatar: res.data.avatar }) })
+      .then(res => {
+        setCurrentUser({ name: res.data.name, about: res.data.about, avatar: res.data.avatar, _id: res.data._id });
+      })
       .then(() => { closeAllPopups() })
       .catch(err => console.log(err))
   }
 
   function handleUpdateAvatar(avatar) {
     api.setUserAvatar(avatar, token)
-      .then(res => { setCurrentUser({ name: res.data.name, about: res.data.about, avatar: res.data.avatar }) })
+      .then(res => { setCurrentUser({ name: res.data.name, about: res.data.about, avatar: res.data.avatar, _id: res.data._id }) })
       .then(() => { closeAllPopups() })
       .catch(err => console.log(err))
   }
@@ -209,12 +211,12 @@ function App() {
       api.getUserInfo(token)
         .then((res) => {
           if (res && res.data) {
-            setCurrentUser(res)
+            setCurrentUser(res);
           }
     })
         .catch(err => console.log(err))
     } 
-  }, [token]);
+  }, [currentUser, token]);
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
