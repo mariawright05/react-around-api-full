@@ -1,4 +1,4 @@
-# Around the U.S.
+# [Around the U.S.](https://around.mariawright.me)
 This repo contains:
   - The backend API of "Around the U.S." with authorization and registration handled by the back-end server.
   - The frontend React App which uses this API
@@ -17,6 +17,10 @@ This repo contains:
   
 ## :star2: Demo
   ### [Watch a 1-minute demo](https://demo.mariawright.me/conversations/69236967-541c-5e4c-a424-9067c01ba0f0)
+  ### [See the live page](https://around.mariawright.me)
+  Create your own account or login with:
+  - Username: tester@around.com
+  - Password: 12345678
   
 ### Homepage
 ![image](https://user-images.githubusercontent.com/9382039/149361588-2ecb46f9-f277-4e9d-ad0f-dacc00e44fbe.png)
